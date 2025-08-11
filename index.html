@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krščanski kviz - Vprašanja</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .filters {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .vprasanja-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .vprasanje {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .vprasanje h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        .odgovor {
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+        }
+        .meta {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 15px;
+        }
+        .tezavnost {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e74c3c;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .tezavnost-1 { background-color: #2ecc71; }
+        .tezavnost-2 { background-color: #3498db; }
+        .tezavnost-3 { background-color: #f39c12; }
+        .tezavnost-4 { background-color: #e67e22; }
+        .tezavnost-5 { background-color: #e74c3c; }
+        .kategorije {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .kategorija {
+            background-color: #e0f7fa;
+            color: #00838f;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-style: italic;
+            grid-column: 1 / -1;
+        }
+        @media (max-width: 600px) {
+            .vprasanja-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Krščanski kviz - Vprašanja</h1>
+    
+    <div class="filters">
+        <div class="filter-group">
+            <label for="tezavnost">Težavnost:</label>
+            <select id="tezavnost">
+                <option value="0">Vse težavnosti</option>
+                <option value="1">1 - Zelo lahka</option>
+                <option value="2">2 - Lahka</option>
+                <option value="3">3">3 - Srednja</option>
+                <option value="4">4 - Težka</option>
+                <option value="5">5 - Zelo težka</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label for="kategorija">Kategorija:</label>
+            <select id="kategorija">
+                <option value="">Vse kategorije</option>
+                <!-- Kategorije bodo dodane dinamično -->
+            </select>
+        </div>
+        
+        <button id="filtriraj">Filtriraj</button>
+        <button id="ponastavi">Ponastavi filtre</button>
+    </div>
+    
+    <div class="vprasanja-container" id="vprasanja-container">
+        <!-- Vprašanja bodo naložena dinamično -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const vprasanjaContainer = document.getElementById('vprasanja-container');
+            const tezavnostFilter = document.getElementById('tezavnost');
+            const kategorijaFilter = document.getElementById('kategorija');
+            const filtrirajBtn = document.getElementById('filtriraj');
+            const ponastaviBtn = document.getElementById('ponastavi');
+            
+            let vprasanja = [];
+            let vseKategorije = new Set();
+            
+            // Naloži vprašanja iz JSON datoteke
+            fetch('vprasanja.json')
+                .then(response => response.json())
+                .then(data => {
+                    vprasanja = data;
+                    
+                    // Pripravi seznam vseh kategorij
+                    data.forEach(vprasanje => {
+                        vprasanje.kategorije.forEach(kategorija => {
+                            vseKategorije.add(kategorija);
+                        });
+                    });
+                    
+                    // Dodaj kategorije v filter
+                    const sortedKategorije = Array.from(vseKategorije).sort();
+                    sortedKategorije.forEach(kategorija => {
+                        const option = document.createElement('option');
+                        option.value = kategorija;
+                        option.textContent = kategorija;
+                        kategorijaFilter.appendChild(option);
+                    });
+                    
+                    // Prikaži vsa vprašanja
+                    prikaziVprasanja(vprasanja);
+                })
+                .catch(error => {
+                    console.error('Napaka pri nalaganju vprašanj:', error);
+                    vprasanjaContainer.innerHTML = '<div class="no-results">Napaka pri nalaganju vprašanj. Preverite, ali datoteka vprasanja.json obstaja.</div>';
+                });
+            
+            // Funkcija za prikaz vprašanj
+            function prikaziVprasanja(vprasanjaZaPrikaz) {
+                if (vprasanjaZaPrikaz.length === 0) {
+                    vprasanjaContainer.innerHTML = '<div class="no-results">Ni vprašanj, ki ustrezajo izbranim filtrom.</div>';
+                    return;
+                }
+                
+                vprasanjaContainer.innerHTML = '';
+                
+                vprasanjaZaPrikaz.forEach(vprasanje => {
+                    const vprasanjeElement = document.createElement('div');
+                    vprasanjeElement.className = 'vprasanje';
+                    
+                    const tezavnostElement = document.createElement('div');
+                    tezavnostElement.className = `tezavnost tezavnost-${vprasanje.težavnost}`;
+                    tezavnostElement.textContent = vprasanje.težavnost;
+                    
+                    const vprasanjeText = document.createElement('h3');
+                    vprasanjeText.textContent = vprasanje.vprašanje;
+                    
+                    const odgovorElement = document.createElement('div');
+                    odgovorElement.className = 'odgovor';
+                    odgovorElement.textContent = `Odgovor: ${vprasanje.odgovor}`;
+                    
+                    const kategorijeElement = document.createElement('div');
+                    kategorijeElement.className = 'kategorije';
+                    
+                    vprasanje.kategorije.forEach(kategorija => {
+                        const kategorijaElement = document.createElement('span');
+                        kategorijaElement.className = 'kategorija';
+                        kategorijaElement.textContent = kategorija;
+                        kategorijeElement.appendChild(kategorijaElement);
+                    });
+                    
+                    vprasanjeElement.appendChild(tezavnostElement);
+                    vprasanjeElement.appendChild(vprasanjeText);
+                    vprasanjeElement.appendChild(odgovorElement);
+                    vprasanjeElement.appendChild(kategorijeElement);
+                    
+                    vprasanjaContainer.appendChild(vprasanjeElement);
+                });
+            }
+            
+            // Funkcija za filtriranje
+            function filtrirajVprasanja() {
+                const izbranaTezavnost = parseInt(tezavnostFilter.value);
+                const izbranaKategorija = kategorijaFilter.value;
+                
+                const filtriranaVprasanja = vprasanja.filter(vprasanje => {
+                    // Preveri težavnost
+                    if (izbranaTezavnost !== 0 && vprasanje.težavnost !== izbranaTezavnost) {
+                        return false;
+                    }
+                    
+                    // Preveri kategorijo
+                    if (izbranaKategorija && !vprasanje.kategorije.includes(izbranaKategorija)) {
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                prikaziVprasanja(filtriranaVprasanja);
+            }
+            
+            // Nastavi dogodke
+            filtrirajBtn.addEventListener('click', filtrirajVprasanja);
+            
+            ponastaviBtn.addEventListener('click', function() {
+                tezavnostFilter.value = '0';
+                kategorijaFilter.value = '';
+                prikaziVprasanja(vprasanja);
+            });
+            
+            // Omogoči filtriranje s tipko Enter
+            tezavnostFilter.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') filtrirajVprasanja();
+            });
+            
+            kategorijaFilter.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') filtrirajVprasanja();
+            });
+        });
+    </script>
+</body>
+</html>
