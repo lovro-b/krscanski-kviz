@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeFilters = { difficulties: [], categories: [], searchQuery: '', sortBy: 'difficulty' };
     let showOnlyFavorites = false;
 
-    fetch('vprasanja.json')
+    fetch('./vprasanja.json')
         .then(r => r.json())
         .then(data => {
             questions = data.map((q, i) => ({ ...q, id: q.id || i + 1 }));
