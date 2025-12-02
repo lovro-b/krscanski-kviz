@@ -2,283 +2,283 @@
   {
     "vprašanje": "Kdo je bil prvi papež?",
     "odgovor": "Apostol Peter",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma", "Cerkev"],
     "težavnost": 2
   },
   {
     "vprašanje": "Naštej vse štiri evangeliste.",
     "odgovor": "Matej, Marko, Luka in Janez",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kdo je krstil Jezusa?",
     "odgovor": "Janez Krstnik",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 1
   },
   {
     "vprašanje": "Kako postanemo kristjani?",
     "odgovor": "S svetim krstom",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Cerkev"],
     "težavnost": 1
   },
   {
     "vprašanje": "Katero molitev nas je naučil Jezus?",
     "odgovor": "Oče naš",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Cerkev"],
     "težavnost": 1
   },
   {
     "vprašanje": "Kateremu preroku je bog dal 10 zapovedi?",
     "odgovor": "Mojzesu",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kdo je Goljata premagal s kamnom in fračo?",
     "odgovor": "David",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kako je bilo ime ženi Abrahama?",
     "odgovor": "Sara",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kako je bilo ime ženi, ki je Jezusu obrisala glavo, medtem ko je nosil križ?",
     "odgovor": "Veronika",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma", "Cerkev"],
     "težavnost": 4
   },
   {
     "vprašanje": "Kako je umrl sveti Štefan?",
     "odgovor": "Kamnali so ga",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
-    "težavnost": 3
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma", "Cerkev"],
+    "težavnost": 4
   },
   {
     "vprašanje": "Kdaj praznujemo božič?",
     "odgovor": "25. decembra",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Cerkev"],
     "težavnost": 1
   },
   {
     "vprašanje": "Kako se imenuje prostor v cerkvi, iz katerega se bere Sveto pismo?",
     "odgovor": "Ambon",
-    "kategorije": ["Sveto pismo"],
+    "kategorije": ["Cerkev"],
     "težavnost": 3
   },
   {
     "vprašanje": "V kateri deželi se je rodil Mojzes?",
     "odgovor": "V Egiptu",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 2
   },
   {
     "vprašanje": "S kakšnim imenom se je Bog predstavil Mojzesu?",
     "odgovor": "Jahve",
-    "kategorije": ["Stara zaveza"],
-    "težavnost": 4
+    "kategorije": ["Sveto pismo (splošno)"],
+    "težavnost": 5
   },
   {
     "vprašanje": "Kdo je prvi videl vstalega Jezusa?",
     "odgovor": "Marija Magdalena",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kdo je Jezusa obsodil na smrt?",
     "odgovor": "Poncij Pilat",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kako se imenuje druga knjiga v Svetem pismu?",
     "odgovor": "(Druga) Mojzesova knjiga",
-    "kategorije": ["Sveto pismo", "Stara zaveza"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kje v cerkvi so shranjene posvečene hostije?",
     "odgovor": "V tabernaklju",
-    "kategorije": ["Sveto pismo"],
+    "kategorije": ["Cerkev"],
     "težavnost": 2
   },
   {
     "vprašanje": "Koliko časa so Izraelci tavali po puščavi?",
     "odgovor": "40 let",
-    "kategorije": ["Stara zaveza"],
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kateri apostol je trikrat zatajil Jezusa?",
     "odgovor": "Peter",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kako se imenuje gora, na kateri je Mojzes prejel deset zapovedi?",
     "odgovor": "Gora Sinaj",
-    "kategorije": ["Stara zaveza"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kje je Noe zgradil barko?",
     "odgovor": "Na vrhu hriba",
-    "kategorije": ["Stara zaveza"],
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kako se imenuje prva knjiga Nove zaveze v Svetem pismu?",
     "odgovor": "Evangelij (po Mateju)",
-    "kategorije": ["Sveto pismo", "Nova zaveza"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kdo je hodil po vodi skupaj z Jezusom?",
     "odgovor": "Peter",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Koliko dni je trajal potop v času Noeta?",
     "odgovor": "40 dni in 40 noči",
-    "kategorije": ["Stara zaveza"],
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kako se imenuje mesto, v katerem se je rodil Jezus?",
     "odgovor": "Betlehem",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 1
   },
   {
     "vprašanje": "Kako je bilo ime učencu, ki ni verjel v Jezusovo vstajenje, dokler ga ni videl?",
     "odgovor": "Tomaž",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kdo je bil najmočnejši mož v Stari zavezi, znan po svojih dolgih laseh?",
     "odgovor": "Samson",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kdo je bil brat Mojzesa?",
     "odgovor": "Aron",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 4
   },
   {
     "vprašanje": "Kako se imenuje zadnja knjiga v Svetem pismu?",
     "odgovor": "Razodetje (Apokalipsa)",
-    "kategorije": ["Sveto pismo", "Nova zaveza"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 4
   },
   {
     "vprašanje": "Kdo je bil kralj Izraela, znan po svoji modrosti?",
     "odgovor": "Salomon",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 3
   },
   {
     "vprašanje": "Koliko psalmov vsebuje sveto pismo?",
     "odgovor": "150",
-    "kategorije": ["Sveto pismo"],
-    "težavnost": 4
+    "kategorije": ["Sveto pismo (splošno)"],
+    "težavnost": 5
   },
   {
     "vprašanje": "Koliko dni in noči se je Jezus postil v puščavi?",
     "odgovor": "40 dni in 40 noči",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Cerkev"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kako se imenuje kraj, kjer so križali Jezusa?",
     "odgovor": "Golgota",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kdo je bil apostol, ki je pisal veliko pisem prvim kristjanom?",
     "odgovor": "Pavel",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma", "Cerkev"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kako se je imenoval pastir, ki je postal kralj in napisal številne psalme?",
     "odgovor": "David",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kdo je bil prvi človek, ki ga je Bog ustvaril?",
     "odgovor": "Adam",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 1
   },
   {
     "vprašanje": "Kdo je bil prvi mučenec med kristjani?",
     "odgovor": "Štefan",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
-    "težavnost": 3
+    "kategorije": ["Osebe Svetega pisma", "Cerkev"],
+    "težavnost": 4
   },
   {
     "vprašanje": "Kako je ime človeku, ki ga je pogoltnila riba?",
     "odgovor": "Jona",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kako se imenuje reka, kjer je bil Jezus krščen?",
     "odgovor": "Reka Jordan",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kateri apostol je bil po poklicu cestninar?",
     "odgovor": "Matej",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma", "Cerkev"],
     "težavnost": 4
   },
   {
     "vprašanje": "Koliko dni je bil Jezus mrtev, preden je vstal od mrtvih?",
     "odgovor": "Tri dni",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Dogodki in zgodbe iz svetega pisma"],
     "težavnost": 1
   },
   {
     "vprašanje": "Kdo je bil učenec, ki je izdal Jezusa?",
     "odgovor": "Juda Iškarijot",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 2
   },
   {
     "vprašanje": "Kako se je imenoval sin Adama in Eve, ki ga je ubil njegov brat?",
     "odgovor": "Abel",
-    "kategorije": ["Stara zaveza", "Biblijske osebe"],
+    "kategorije": ["Osebe Svetega pisma"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kdo je napisal večino pisem v Novi zavezi?",
     "odgovor": "Apostol Pavel",
-    "kategorije": ["Nova zaveza", "Biblijske osebe"],
-    "težavnost": 3
+    "kategorije": ["Osebe Svetega pisma", "Cerkev"],
+    "težavnost": 4
   },
   {
     "vprašanje": "Kje je Jezus molil, preden so ga prijeli, mu sodili in ga križali?",
     "odgovor": "V vrtu Getsemani",
-    "kategorije": ["Nova zaveza"],
+    "kategorije": ["Sveto pismo (splošno)"],
     "težavnost": 3
   },
   {
     "vprašanje": "Kako se je imenoval cesar v času, ko se je Jezus rodil?",
     "odgovor": "Cesar Avgust",
-    "kategorije": ["Nova zaveza"],
-    "težavnost": 4
+    "kategorije": ["Sveto pismo (splošno)"],
+    "težavnost": 5
   }
-]
+] 
