@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krščanski Kviz - Modern Filtri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --favorite: #e74c3c;
+            
+            /* Barve težavnosti - po tvoji predlogi */
+            --difficulty-1: #22C55E; /* Zelena - Zelo lahka */
+            --difficulty-2: #EAB308; /* Rumena - Lahka */
+            --difficulty-3: #F97316; /* Oranžna - Srednja */
+            --difficulty-4: #DC2626; /* Rdeča - Težka */
+            --difficulty-5: #7C3AED; /* Vijolična - Zelo težka */
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+        
+        /* Filter Sidebar */
+        .filter-sidebar {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .filter-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .filter-group {
+            margin-bottom: 1.75rem;
+        }
+        
+        .filter-group-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-option:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .filter-option.active {
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .filter-option input {
+            margin-right: 0.75rem;
+            accent-color: var(--primary);
+        }
+        
+        .filter-option label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .filter-count {
+            background: rgba(0,0,0,0.05);
+            color: var(--gray);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .search-bar {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 0.75rem 1.25rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            padding: 0.5rem;
+            background: transparent;
+        }
+        
+        .search-bar i {
+            color: var(--gray);
+            margin-right: 0.75rem;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .results-count {
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+        
+        .sort-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .sort-btn {
+            background: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .sort-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .question-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            border-top: 4px solid var(--primary); /* Privzeta barva */
+        }
+        
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        /* Barvne različice za težavnost */
+        .question-card.difficulty-1 {
+            border-top-color: var(--difficulty-1);
+        }
+        
+        .question-card.difficulty-2 {
+            border-top-color: var(--difficulty-2);
+        }
+        
+        .question-card.difficulty-3 {
+            border-top-color: var(--difficulty-3);
+        }
+        
+        .question-card.difficulty-4 {
+            border-top-color: var(--difficulty-4);
+        }
+        
+        .question-card.difficulty-5 {
+            border-top-color: var(--difficulty-5);
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .question-difficulty {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            color: white;
+        }
+        
+        /* Barvne različice za oznake težavnosti */
+        .difficulty-badge-1 {
+            background: var(--difficulty-1);
+        }
+        
+        .difficulty-badge-2 {
+            background: var(--difficulty-2);
+        }
+        
+        .difficulty-badge-3 {
+            background: var(--difficulty-3);
+        }
+        
+        .difficulty-badge-4 {
+            background: var(--difficulty-4);
+        }
+        
+        .difficulty-badge-5 {
+            background: var(--difficulty-5);
+        }
+        
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #ddd;
+            transition: all 0.3s ease;
+            padding: 0.25rem;
+            border-radius: 50%;
+        }
+        
+        .favorite-btn:hover {
+            color: var(--favorite);
+            transform: scale(1.1);
+        }
+        
+        .favorite-btn.active {
+            color: var(--favorite);
+        }
+        
+        .favorite-btn.active:hover {
+            color: #c0392b;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+        }
+        
+        .answer {
+            color: var(--secondary);
+            font-weight: 600;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            margin-top: 1rem;
+        }
+        
+        .question-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.25rem;
+        }
+        
+        .category-tag {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+        
+        .favorites-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(0,0,0,0.1);
+        }
+        
+        .favorites-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .favorites-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .show-favorites-btn {
+            background: var(--favorite);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        
+        .show-favorites-btn:hover {
+            background: #c0392b;
+        }
+        
+        .favorites-count {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-sidebar {
+                position: static;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="container">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar">
+            <div class="filter-header">
+                <h2 class="filter-title">Filtri</h2>
+                <button class="reset-btn">
+                    <i class="fas fa-undo"></i>
+                    Ponastavi
+                </button>
+            </div>
+            
+            <!-- Difficulty Filter -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span>Težavnost</span>
+                </div>
+                <div class="filter-options" id="difficulty-filters">
+                    <div class="filter-option active">
+                        <input type="checkbox" id="difficulty-all" checked>
+                        <label for="difficulty-all">Vse težavnosti</label>
+                        <span class="filter-count" id="count-difficulty-all">0</span>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="difficulty-1">
+                        <label for="difficulty-1">1 - Zelo lahka</label>
+                        <span class="filter-count" id="count-difficulty-1">0</span>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="difficulty-2">
+                        <label for="difficulty-2">2 - Lahka</label>
+                        <span class="filter-count" id="count-difficulty-2">0</span>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="difficulty-3">
+                        <label for="difficulty-3">3 - Srednja</label>
+                        <span class="filter-count" id="count-difficulty-3">0</span>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="difficulty-4">
+                        <label for="difficulty-4">4 - Težka</label>
+                        <span class="filter-count" id="count-difficulty-4">0</span>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="difficulty-5">
+                        <label for="difficulty-5">5 - Zelo težka</label>
+                        <span class="filter-count" id="count-difficulty-5">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span>Kategorije</span>
+                </div>
+                <div class="filter-options" id="category-filters">
+                    <div class="filter-option active">
+                        <input type="checkbox" id="category-all" checked>
+                        <label for="category-all">Vse kategorije</label>
+                        <span class="filter-count" id="count-category-all">0</span>
+                    </div>
+                    <!-- Kategorije bodo dodane dinamično -->
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Išči med vprašanji in odgovori...">
+            </div>
+            
+            <!-- Results Header -->
+            <div class="results-header">
+                <div class="results-count">
+                    Najdenih: <span id="results-count">0</span> vprašanj
+                </div>
+                <div class="sort-options">
+                    <button class="sort-btn active" data-sort="difficulty">
+                        <i class="fas fa-sort-amount-down"></i>
+                        Težavnost
+                    </button>
+                    <button class="sort-btn" data-sort="alphabetical">
+                        <i class="fas fa-sort-alpha-down"></i>
+                        A-Ž
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Questions Grid -->
+            <div class="questions-grid" id="questions-container">
+                <!-- Vprašanja bodo naložena dinamično -->
+            </div>
+            
+            <!-- Favorites Section -->
+            <div class="favorites-section">
+                <div class="favorites-header">
+                    <h2 class="favorites-title">Priljubljena vprašanja</h2>
+                    <button class="show-favorites-btn" id="show-favorites-btn">
+                        <i class="fas fa-heart"></i>
+                        Prikaži priljubljene
+                        <span class="favorites-count" id="favorites-count">0</span>
+                    </button>
+                </div>
+                <div class="questions-grid" id="favorites-container">
+                    <!-- Priljubljena vprašanja bodo prikazana tu -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionsContainer = document.getElementById('questions-container');
+            const favoritesContainer = document.getElementById('favorites-container');
+            const searchInput = document.getElementById('search-input');
+            const resultsCount = document.getElementById('results-count');
+            const resetBtn = document.querySelector('.reset-btn');
+            const sortButtons = document.querySelectorAll('.sort-btn');
+            const showFavoritesBtn = document.getElementById('show-favorites-btn');
+            const favoritesCount = document.getElementById('favorites-count');
+            
+            let questions = [];
+            let allCategories = new Set();
+            let favoriteQuestions = new Set(); // Shranjujemo ID-je priljubljenih vprašanj
+            let activeFilters = {
+                difficulties: [],
+                categories: [],
+                searchQuery: '',
+                sortBy: 'difficulty'
+            };
+            let showOnlyFavorites = false;
+            
+            // Naloži vprašanja iz JSON datoteke
+            fetch('vprasanja.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Dodaj ID-je vprašanjem, če jih še nimajo
+                    questions = data.map((question, index) => {
+                        return {
+                            ...question,
+                            id: question.id || index + 1 // Ustvari ID, če ne obstaja
+                        };
+                    });
+                    
+                    // Naloži shranjene priljubljene vprašanja iz localStorage
+                    loadFavorites();
+                    
+                    // Pripravi seznam vseh kategorij
+                    data.forEach(question => {
+                        question.kategorije.forEach(category => {
+                            allCategories.add(category);
+                        });
+                    });
+                    
+                    // Dodaj kategorije v filter
+                    const sortedCategories = Array.from(allCategories).sort();
+                    sortedCategories.forEach(category => {
+                        const filterOption = document.createElement('div');
+                        filterOption.className = 'filter-option';
+                        filterOption.innerHTML = `
+                            <input type="checkbox" id="category-${category.replace(/\s+/g, '-')}">
+                            <label for="category-${category.replace(/\s+/g, '-')}">${category}</label>
+                            <span class="filter-count" id="count-category-${category.replace(/\s+/g, '-')}">0</span>
+                        `;
+                        document.getElementById('category-filters').appendChild(filterOption);
+                    });
+                    
+                    // Posodobi števce in prikaži vprašanja
+                    updateCounters();
+                    applyFilters();
+                    displayFavorites();
+                    
+                    // Nastavi dogodke za filtre
+                    setupFilterEvents();
+                })
+                .catch(error => {
+                    console.error('Napaka pri nalaganju vprašanj:', error);
+                    questionsContainer.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <h3>Napaka pri nalaganju vprašanj</h3>
+                            <p>Preverite, ali datoteka vprasanja.json obstaja.</p>
+                        </div>
+                    `;
+                });
+            
+            // Funkcija za nalaganje priljubljenih vprašanj iz localStorage
+            function loadFavorites() {
+                const savedFavorites = localStorage.getItem('favoriteQuestions');
+                if (savedFavorites) {
+                    favoriteQuestions = new Set(JSON.parse(savedFavorites));
+                }
+                updateFavoritesCount();
+            }
+            
+            // Funkcija za shranjevanje priljubljenih vprašanj v localStorage
+            function saveFavorites() {
+                localStorage.setItem('favoriteQuestions', JSON.stringify([...favoriteQuestions]));
+                updateFavoritesCount();
+            }
+            
+            // Funkcija za posodobitev števca priljubljenih
+            function updateFavoritesCount() {
+                favoritesCount.textContent = favoriteQuestions.size;
+            }
+            
+            // Funkcija za prikaz vprašanj
+            function displayQuestions(questionsToDisplay) {
+                if (questionsToDisplay.length === 0) {
+                    questionsContainer.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <h3>Ni ustreznih vprašanj</h3>
+                            <p>Spremenite iskalne pogoje za drugačne rezultate.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                questionsContainer.innerHTML = '';
+                
+                questionsToDisplay.forEach(question => {
+                    const isFavorite = favoriteQuestions.has(question.id);
+                    const questionCard = document.createElement('div');
+                    questionCard.className = `question-card difficulty-${question.težavnost}`;
+                    
+                    const questionHeader = document.createElement('div');
+                    questionHeader.className = 'question-header';
+                    
+                    const difficulty = document.createElement('div');
+                    difficulty.className = `question-difficulty difficulty-badge-${question.težavnost}`;
+                    difficulty.textContent = `Težavnost: ${question.težavnost}/5`;
+                    
+                    const favoriteBtn = document.createElement('button');
+                    favoriteBtn.className = `favorite-btn ${isFavorite ? 'active' : ''}`;
+                    favoriteBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                    favoriteBtn.addEventListener('click', function() {
+                        toggleFavorite(question.id);
+                        this.classList.toggle('active');
+                        displayFavorites();
+                    });
+                    
+                    const questionText = document.createElement('div');
+                    questionText.className = 'question-text';
+                    questionText.textContent = question.vprašanje;
+                    
+                    const answer = document.createElement('div');
+                    answer.className = 'answer';
+                    answer.textContent = question.odgovor;
+                    
+                    const categories = document.createElement('div');
+                    categories.className = 'question-categories';
+                    
+                    question.kategorije.forEach(category => {
+                        const categoryTag = document.createElement('div');
+                        categoryTag.className = 'category-tag';
+                        categoryTag.innerHTML = `<i class="fas fa-tag"></i> ${category}`;
+                        categories.appendChild(categoryTag);
+                    });
+                    
+                    questionHeader.appendChild(difficulty);
+                    questionHeader.appendChild(favoriteBtn);
+                    questionCard.appendChild(questionHeader);
+                    questionCard.appendChild(questionText);
+                    questionCard.appendChild(answer);
+                    questionCard.appendChild(categories);
+                    
+                    questionsContainer.appendChild(questionCard);
+                });
+                
+                resultsCount.textContent = questionsToDisplay.length;
+            }
+            
+            // Funkcija za prikaz priljubljenih vprašanj
+            function displayFavorites() {
+                const favoriteQuestionsList = questions.filter(question => 
+                    favoriteQuestions.has(question.id)
+                );
+                
+                if (favoriteQuestionsList.length === 0) {
+                    favoritesContainer.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-heart" style="font-size: 3rem; margin-bottom: 1rem; color: #ddd;"></i>
+                            <h3>Ni priljubljenih vprašanj</h3>
+                            <p>Kliknite na srček ob vprašanju, da ga dodate med priljubljena.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                favoritesContainer.innerHTML = '';
+                
+                favoriteQuestionsList.forEach(question => {
+                    const questionCard = document.createElement('div');
+                    questionCard.className = `question-card difficulty-${question.težavnost}`;
+                    
+                    const questionHeader = document.createElement('div');
+                    questionHeader.className = 'question-header';
+                    
+                    const difficulty = document.createElement('div');
+                    difficulty.className = `question-difficulty difficulty-badge-${question.težavnost}`;
+                    difficulty.textContent = `Težavnost: ${question.težavnost}/5`;
+                    
+                    const favoriteBtn = document.createElement('button');
+                    favoriteBtn.className = 'favorite-btn active';
+                    favoriteBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                    favoriteBtn.addEventListener('click', function() {
+                        toggleFavorite(question.id);
+                        displayFavorites();
+                        applyFilters(); // Osveži glavni prikaz
+                    });
+                    
+                    const questionText = document.createElement('div');
+                    questionText.className = 'question-text';
+                    questionText.textContent = question.vprašanje;
+                    
+                    const answer = document.createElement('div');
+                    answer.className = 'answer';
+                    answer.textContent = question.odgovor;
+                    
+                    const categories = document.createElement('div');
+                    categories.className = 'question-categories';
+                    
+                    question.kategorije.forEach(category => {
+                        const categoryTag = document.createElement('div');
+                        categoryTag.className = 'category-tag';
+                        categoryTag.innerHTML = `<i class="fas fa-tag"></i> ${category}`;
+                        categories.appendChild(categoryTag);
+                    });
+                    
+                    questionHeader.appendChild(difficulty);
+                    questionHeader.appendChild(favoriteBtn);
+                    questionCard.appendChild(questionHeader);
+                    questionCard.appendChild(questionText);
+                    questionCard.appendChild(answer);
+                    questionCard.appendChild(categories);
+                    
+                    favoritesContainer.appendChild(questionCard);
+                });
+            }
+            
+            // Funkcija za preklop priljubljenega statusa
+            function toggleFavorite(questionId) {
+                if (favoriteQuestions.has(questionId)) {
+                    favoriteQuestions.delete(questionId);
+                } else {
+                    favoriteQuestions.add(questionId);
+                }
+                saveFavorites();
+            }
+            
+            // Funkcija za filtriranje in sortiranje
+            function applyFilters() {
+                let filteredQuestions = questions.filter(question => {
+                    // Če je aktiviran filter za prikaz samo priljubljenih
+                    if (showOnlyFavorites && !favoriteQuestions.has(question.id)) {
+                        return false;
+                    }
+                    
+                    // Preveri težavnost
+                    if (activeFilters.difficulties.length > 0 && !activeFilters.difficulties.includes(question.težavnost)) {
+                        return false;
+                    }
+                    
+                    // Preveri kategorije
+                    if (activeFilters.categories.length > 0) {
+                        const hasCategory = question.kategorije.some(category => 
+                            activeFilters.categories.includes(category));
+                        if (!hasCategory) return false;
+                    }
+                    
+                    // Preveri iskalni niz
+                    if (activeFilters.searchQuery) {
+                        const searchLower = activeFilters.searchQuery.toLowerCase();
+                        const questionText = question.vprašanje.toLowerCase();
+                        const answerText = question.odgovor.toLowerCase();
+                        
+                        if (!questionText.includes(searchLower) && !answerText.includes(searchLower)) {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                });
+                
+                // Uporabi sortiranje
+                if (activeFilters.sortBy === 'difficulty') {
+                    filteredQuestions.sort((a, b) => a.težavnost - b.težavnost);
+                } else if (activeFilters.sortBy === 'alphabetical') {
+                    filteredQuestions.sort((a, b) => a.vprašanje.localeCompare(b.vprašanje, 'sl'));
+                }
+                
+                displayQuestions(filteredQuestions);
+            }
+            
+            // Funkcija za posodobitev števcev
+            function updateCounters() {
+                // Števci za težavnost
+                document.getElementById('count-difficulty-all').textContent = questions.length;
+                for (let i = 1; i <= 5; i++) {
+                    const count = questions.filter(q => q.težavnost === i).length;
+                    document.getElementById(`count-difficulty-${i}`).textContent = count;
+                }
+                
+                // Števci za kategorije
+                document.getElementById('count-category-all').textContent = questions.length;
+                allCategories.forEach(category => {
+                    const count = questions.filter(q => q.kategorije.includes(category)).length;
+                    document.getElementById(`count-category-${category.replace(/\s+/g, '-')}`).textContent = count;
+                });
+            }
+            
+            // Funkcija za nastavitev dogodkov za filtre
+            function setupFilterEvents() {
+                // Dogodki za težavnost
+                document.querySelectorAll('#difficulty-filters input').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        const id = this.id;
+                        
+                        if (id === 'difficulty-all') {
+                            const isChecked = this.checked;
+                            document.querySelectorAll('#difficulty-filters input').forEach(cb => {
+                                cb.checked = isChecked;
+                            });
+                            
+                            if (isChecked) {
+                                activeFilters.difficulties = [];
+                            } else {
+                                activeFilters.difficulties = [1, 2, 3, 4, 5];
+                            }
+                        } else {
+                            const difficulty = parseInt(id.split('-')[1]);
+                            
+                            if (this.checked) {
+                                activeFilters.difficulties.push(difficulty);
+                            } else {
+                                activeFilters.difficulties = activeFilters.difficulties.filter(d => d !== difficulty);
+                            }
+                            
+                            // Preveri ali so vse označene
+                            const allChecked = Array.from(document.querySelectorAll('#difficulty-filters input:not(#difficulty-all)'))
+                                .every(cb => cb.checked);
+                            document.getElementById('difficulty-all').checked = allChecked;
+                        }
+                        
+                        applyFilters();
+                    });
+                });
+                
+                // Dogodki za kategorije
+                document.querySelectorAll('#category-filters input').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        const id = this.id;
+                        
+                        if (id === 'category-all') {
+                            const isChecked = this.checked;
+                            document.querySelectorAll('#category-filters input').forEach(cb => {
+                                cb.checked = isChecked;
+                            });
+                            
+                            if (isChecked) {
+                                activeFilters.categories = [];
+                            } else {
+                                activeFilters.categories = Array.from(allCategories);
+                            }
+                        } else {
+                            const category = this.id.replace('category-', '').replace(/-/g, ' ');
+                            
+                            if (this.checked) {
+                                activeFilters.categories.push(category);
+                            } else {
+                                activeFilters.categories = activeFilters.categories.filter(c => c !== category);
+                            }
+                            
+                            // Preveri ali so vse označene
+                            const allChecked = Array.from(document.querySelectorAll('#category-filters input:not(#category-all)'))
+                                .every(cb => cb.checked);
+                            document.getElementById('category-all').checked = allChecked;
+                        }
+                        
+                        applyFilters();
+                    });
+                });
+                
+                // Iskanje
+                searchInput.addEventListener('input', function() {
+                    activeFilters.searchQuery = this.value.trim().toLowerCase();
+                    applyFilters();
+                });
+                
+                // Sortiranje
+                sortButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        sortButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        activeFilters.sortBy = this.dataset.sort;
+                        applyFilters();
+                    });
+                });
+                
+                // Prikaz samo priljubljenih
+                showFavoritesBtn.addEventListener('click', function() {
+                    showOnlyFavorites = !showOnlyFavorites;
+                    if (showOnlyFavorites) {
+                        this.innerHTML = '<i class="fas fa-times"></i> Prikaži vse vprašanja';
+                        this.style.background = 'var(--gray)';
+                    } else {
+                        this.innerHTML = '<i class="fas fa-heart"></i> Prikaži priljubljene <span class="favorites-count" id="favorites-count">' + favoriteQuestions.size + '</span>';
+                        this.style.background = 'var(--favorite)';
+                    }
+                    applyFilters();
+                });
+                
+                // Ponastavi filtre
+                resetBtn.addEventListener('click', function() {
+                    // Ponastavi vse checkboxe
+                    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.checked = true;
+                    });
+                    
+                    // Ponastavi iskanje
+                    searchInput.value = '';
+                    
+                    // Ponastavi filtre
+                    activeFilters = {
+                        difficulties: [],
+                        categories: [],
+                        searchQuery: '',
+                        sortBy: 'difficulty'
+                    };
+                    
+                    // Ponastavi sortiranje
+                    sortButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('[data-sort="difficulty"]').classList.add('active');
+                    
+                    // Ponastavi prikaz vseh vprašanj
+                    showOnlyFavorites = false;
+                    showFavoritesBtn.innerHTML = '<i class="fas fa-heart"></i> Prikaži priljubljene <span class="favorites-count" id="favorites-count">' + favoriteQuestions.size + '</span>';
+                    showFavoritesBtn.style.background = 'var(--favorite)';
+                    
+                    applyFilters();
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
