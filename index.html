@@ -1,412 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krščanski kviz - Vprašanja</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            min-height: 100vh;
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            grid-column: 1 / -1;
-        }
-        .filters {
-            background-color: #fff;
-            padding: 20px;
-            border-right: 1px solid #ddd;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            overflow-y: auto;
-        }
-        .filter-group {
-            margin-bottom: 25px;
-        }
-        .filter-group h3 {
-            margin-top: 0;
-            color: #2c3e50;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-        .filter-option {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-        }
-        .filter-option input {
-            margin-right: 10px;
-        }
-        .filter-option label {
-            flex: 1;
-            cursor: pointer;
-        }
-        .count {
-            color: #7f8c8d;
-            font-size: 0.9em;
-        }
-        .content {
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .vprasanja-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .vprasanje {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        .vprasanje h3 {
-            margin-top: 0;
-            color: #3498db;
-        }
-        .odgovor {
-            color: #27ae60;
-            font-weight: bold;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #ddd;
-        }
-        .meta {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            margin-top: 15px;
-        }
-        .tezavnost {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #e74c3c;
-            color: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        .tezavnost-1 { background-color: #2ecc71; }
-        .tezavnost-2 { background-color: #3498db; }
-        .tezavnost-3 { background-color: #f39c12; }
-        .tezavnost-4 { background-color: #e67e22; }
-        .tezavnost-5 { background-color: #e74c3c; }
-        .kategorije {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 10px;
-        }
-        .kategorija {
-            background-color: #e0f7fa;
-            color: #00838f;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-        }
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: #7f8c8d;
-            font-style: italic;
-            grid-column: 1 / -1;
-        }
-        @media (max-width: 768px) {
-            body {
-                grid-template-columns: 1fr;
-            }
-            .filters {
-                border-right: none;
-                border-bottom: 1px solid #ddd;
-            }
-        }
-        @media (max-width: 600px) {
-            .vprasanja-container {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Krščanski Kviz – Modern Filtri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="slog.css">
 </head>
 <body>
-    <h1>Krščanski kviz - Vprašanja</h1>
-    
-    <div class="filters">
-        <div class="filter-group">
-            <h3>Težavnost</h3>
-            <div class="filter-option">
-                <input type="checkbox" id="tezavnost-vse" checked>
-                <label for="tezavnost-vse">Vse težavnosti</label>
-                <span class="count" id="count-tezavnost-vse"></span>
+    <div class="container">
+        <aside class="filter-sidebar">
+            <div class="filter-header">
+                <h2 class="filter-title">Filtri</h2>
+                <button class="reset-btn"><i class="fas fa-undo"></i> Ponastavi</button>
             </div>
-            <div class="filter-option">
-                <input type="checkbox" id="tezavnost-1" checked>
-                <label for="tezavnost-1">1 - Zelo lahka</label>
-                <span class="count" id="count-tezavnost-1"></span>
+
+            <div class="filter-group">
+                <div class="filter-group-title"><span>Težavnost</span></div>
+                <div class="filter-options" id="difficulty-filters"></div>
             </div>
-            <div class="filter-option">
-                <input type="checkbox" id="tezavnost-2" checked>
-                <label for="tezavnost-2">2 - Lahka</label>
-                <span class="count" id="count-tezavnost-2"></span>
+
+            <div class="filter-group">
+                <div class="filter-group-title"><span>Kategorije</span></div>
+                <div class="filter-options" id="category-filters"></div>
             </div>
-            <div class="filter-option">
-                <input type="checkbox" id="tezavnost-3" checked>
-                <label for="tezavnost-3">3 - Srednja</label>
-                <span class="count" id="count-tezavnost-3"></span>
+        </aside>
+
+        <main class="main-content">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Išči med vprašanji in odgovori...">
             </div>
-            <div class="filter-option">
-                <input type="checkbox" id="tezavnost-4" checked>
-                <label for="tezavnost-4">4 - Težka</label>
-                <span class="count" id="count-tezavnost-4"></span>
+
+            <div class="results-header">
+                <div class="results-count">Najdenih: <span id="results-count">0</span> vprašanj</div>
+                <div class="sort-options">
+                    <button class="sort-btn active" data-sort="difficulty"><i class="fas fa-sort-amount-down"></i> Težavnost</button>
+                    <button class="sort-btn" data-sort="alphabetical"><i class="fas fa-sort-alpha-down"></i> A-Ž</button>
+                </div>
             </div>
-            <div class="filter-option">
-                <input type="checkbox" id="tezavnost-5" checked>
-                <label for="tezavnost-5">5 - Zelo težka</label>
-                <span class="count" id="count-tezavnost-5"></span>
+
+            <div class="questions-grid" id="questions-container"></div>
+
+            <div class="favorites-section">
+                <div class="favorites-header">
+                    <h2 class="favorites-title">Priljubljena vprašanja</h2>
+                    <button class="show-favorites-btn" id="show-favorites-btn">
+                        <i class="fas fa-heart"></i> Prikaži priljubljene
+                        <span class="favorites-count" id="favorites-count">0</span>
+                    </button>
+                </div>
+                <div class="questions-grid" id="favorites-container"></div>
             </div>
-        </div>
-        
-        <div class="filter-group" id="kategorije-filter">
-            <h3>Kategorije</h3>
-            <div class="filter-option">
-                <input type="checkbox" id="kategorija-vse" checked>
-                <label for="kategorija-vse">Vse kategorije</label>
-                <span class="count" id="count-kategorija-vse"></span>
-            </div>
-            <!-- Kategorije bodo dodane dinamično -->
-        </div>
-    </div>
-    
-    <div class="content">
-        <div class="vprasanja-container" id="vprasanja-container">
-            <!-- Vprašanja bodo naložena dinamično -->
-        </div>
+        </main>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const vprasanjaContainer = document.getElementById('vprasanja-container');
-            const kategorijeFilterContainer = document.getElementById('kategorije-filter');
-            
-            let vprasanja = [];
-            let vseKategorije = new Set();
-            let aktivniFiltri = {
-                tezavnost: [1, 2, 3, 4, 5],
-                kategorije: []
-            };
-            
-            // Naloži vprašanja iz JSON datoteke
-            fetch('vprasanja.json')
-                .then(response => response.json())
-                .then(data => {
-                    vprasanja = data;
-                    
-                    // Pripravi seznam vseh kategorij
-                    data.forEach(vprasanje => {
-                        vprasanje.kategorije.forEach(kategorija => {
-                            vseKategorije.add(kategorija);
-                        });
-                    });
-                    
-                    // Dodaj kategorije v filter
-                    const sortedKategorije = Array.from(vseKategorije).sort();
-                    sortedKategorije.forEach(kategorija => {
-                        const option = document.createElement('div');
-                        option.className = 'filter-option';
-                        option.innerHTML = `
-                            <input type="checkbox" id="kategorija-${kategorija.replace(/\s+/g, '-')}" checked>
-                            <label for="kategorija-${kategorija.replace(/\s+/g, '-')}">${kategorija}</label>
-                            <span class="count" id="count-kategorija-${kategorija.replace(/\s+/g, '-')}"></span>
-                        `;
-                        kategorijeFilterContainer.appendChild(option);
-                        
-                        // Dodaj v aktivne filtre
-                        aktivniFiltri.kategorije.push(kategorija);
-                    });
-                    
-                    // Posodobi števce
-                    posodobiStevce();
-                    
-                    // Prikaži vsa vprašanja
-                    prikaziVprasanja(filtrirajVprasanja());
-                    
-                    // Nastavi dogodke za filtre
-                    nastaviDogodkeZaFiltre();
-                })
-                .catch(error => {
-                    console.error('Napaka pri nalaganju vprašanj:', error);
-                    vprasanjaContainer.innerHTML = '<div class="no-results">Napaka pri nalaganju vprašanj. Preverite, ali datoteka vprasanja.json obstaja.</div>';
-                });
-            
-            // Funkcija za prikaz vprašanj
-            function prikaziVprasanja(vprasanjaZaPrikaz) {
-                if (vprasanjaZaPrikaz.length === 0) {
-                    vprasanjaContainer.innerHTML = '<div class="no-results">Ni vprašanj, ki ustrezajo izbranim filtrom.</div>';
-                    return;
-                }
-                
-                vprasanjaContainer.innerHTML = '';
-                
-                vprasanjaZaPrikaz.forEach(vprasanje => {
-                    const vprasanjeElement = document.createElement('div');
-                    vprasanjeElement.className = 'vprasanje';
-                    
-                    const tezavnostElement = document.createElement('div');
-                    tezavnostElement.className = `tezavnost tezavnost-${vprasanje.težavnost}`;
-                    tezavnostElement.textContent = vprasanje.težavnost;
-                    
-                    const vprasanjeText = document.createElement('h3');
-                    vprasanjeText.textContent = vprasanje.vprašanje;
-                    
-                    const odgovorElement = document.createElement('div');
-                    odgovorElement.className = 'odgovor';
-                    odgovorElement.textContent = `Odgovor: ${vprasanje.odgovor}`;
-                    
-                    const kategorijeElement = document.createElement('div');
-                    kategorijeElement.className = 'kategorije';
-                    
-                    vprasanje.kategorije.forEach(kategorija => {
-                        const kategorijaElement = document.createElement('span');
-                        kategorijaElement.className = 'kategorija';
-                        kategorijaElement.textContent = kategorija;
-                        kategorijeElement.appendChild(kategorijaElement);
-                    });
-                    
-                    vprasanjeElement.appendChild(tezavnostElement);
-                    vprasanjeElement.appendChild(vprasanjeText);
-                    vprasanjeElement.appendChild(odgovorElement);
-                    vprasanjeElement.appendChild(kategorijeElement);
-                    
-                    vprasanjaContainer.appendChild(vprasanjeElement);
-                });
-            }
-            
-            // Funkcija za filtriranje
-            function filtrirajVprasanja() {
-                return vprasanja.filter(vprasanje => {
-                    // Preveri težavnost
-                    if (aktivniFiltri.tezavnost.length > 0 && !aktivniFiltri.tezavnost.includes(vprasanje.težavnost)) {
-                        return false;
-                    }
-                    
-                    // Preveri kategorije
-                    if (aktivniFiltri.kategorije.length > 0) {
-                        const imaKategorijo = vprasanje.kategorije.some(kategorija => 
-                            aktivniFiltri.kategorije.includes(kategorija));
-                        if (!imaKategorijo) return false;
-                    }
-                    
-                    return true;
-                });
-            }
-            
-            // Funkcija za posodobitev števcev
-            function posodobiStevce() {
-                // Števci za težavnost
-                document.getElementById('count-tezavnost-vse').textContent = `(${vprasanja.length})`;
-                for (let i = 1; i <= 5; i++) {
-                    const count = vprasanja.filter(v => v.težavnost === i).length;
-                    document.getElementById(`count-tezavnost-${i}`).textContent = `(${count})`;
-                }
-                
-                // Števci za kategorije
-                document.getElementById('count-kategorija-vse').textContent = `(${vprasanja.length})`;
-                vseKategorije.forEach(kategorija => {
-                    const count = vprasanja.filter(v => v.kategorije.includes(kategorija)).length;
-                    document.getElementById(`count-kategorija-${kategorija.replace(/\s+/g, '-')}`).textContent = `(${count})`;
-                });
-            }
-            
-            // Funkcija za nastavitev dogodkov za filtre
-            function nastaviDogodkeZaFiltre() {
-                // Dogodki za težavnost
-                document.querySelectorAll('[id^="tezavnost-"]').forEach(checkbox => {
-                    checkbox.addEventListener('change', function() {
-                        const id = this.id;
-                        
-                        if (id === 'tezavnost-vse') {
-                            const isChecked = this.checked;
-                            document.querySelectorAll('[id^="tezavnost-"]:not(#tezavnost-vse)').forEach(cb => {
-                                cb.checked = isChecked;
-                            });
-                            
-                            if (isChecked) {
-                                aktivniFiltri.tezavnost = [1, 2, 3, 4, 5];
-                            } else {
-                                aktivniFiltri.tezavnost = [];
-                            }
-                        } else {
-                            const tezavnost = parseInt(id.split('-')[1]);
-                            
-                            if (this.checked) {
-                                aktivniFiltri.tezavnost.push(tezavnost);
-                            } else {
-                                aktivniFiltri.tezavnost = aktivniFiltri.tezavnost.filter(t => t !== tezavnost);
-                                document.getElementById('tezavnost-vse').checked = false;
-                            }
-                            
-                            // Preveri ali so vse označene
-                            const vseOznacene = Array.from(document.querySelectorAll('[id^="tezavnost-"]:not(#tezavnost-vse)'))
-                                .every(cb => cb.checked);
-                            document.getElementById('tezavnost-vse').checked = vseOznacene;
-                        }
-                        
-                        prikaziVprasanja(filtrirajVprasanja());
-                    });
-                });
-                
-                // Dogodki za kategorije
-                document.querySelectorAll('[id^="kategorija-"]').forEach(checkbox => {
-                    checkbox.addEventListener('change', function() {
-                        const id = this.id;
-                        
-                        if (id === 'kategorija-vse') {
-                            const isChecked = this.checked;
-                            document.querySelectorAll('[id^="kategorija-"]:not(#kategorija-vse)').forEach(cb => {
-                                cb.checked = isChecked;
-                            });
-                            
-                            if (isChecked) {
-                                aktivniFiltri.kategorije = Array.from(vseKategorije);
-                            } else {
-                                aktivniFiltri.kategorije = [];
-                            }
-                        } else {
-                            const kategorija = this.id.replace('kategorija-', '').replace(/-/g, ' ');
-                            
-                            if (this.checked) {
-                                aktivniFiltri.kategorije.push(kategorija);
-                            } else {
-                                aktivniFiltri.kategorije = aktivniFiltri.kategorije.filter(k => k !== kategorija);
-                                document.getElementById('kategorija-vse').checked = false;
-                            }
-                            
-                            // Preveri ali so vse označene
-                            const vseOznacene = Array.from(document.querySelectorAll('[id^="kategorija-"]:not(#kategorija-vse)'))
-                                .every(cb => cb.checked);
-                            document.getElementById('kategorija-vse').checked = vseOznacene;
-                        }
-                        
-                        prikaziVprasanja(filtrirajVprasanja());
-                    });
-                });
-            }
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
